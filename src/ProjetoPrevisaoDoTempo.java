@@ -37,12 +37,12 @@ public class ProjetoPrevisaoDoTempo {
 
     private static String getDadosClimaticos(String cidade) throws RuntimeException
     {
-        String dadosClimaticos = "";
+        String dadosClimaticos;
 
         try {
             String nomeCidadeFormatado = URLEncoder.encode(cidade, StandardCharsets.UTF_8);
             String apiKey = Files.readString(Paths.get("src/APIKEY.txt")).trim();
-            String apiUrl = "http://api.weatherapi.com/v1/current.json?key=" + apiKey + "&q=" + nomeCidadeFormatado;
+            String apiUrl = "https://api.weatherapi.com/v1/current.json?key=" + apiKey + "&q=" + nomeCidadeFormatado;
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(apiUrl))
