@@ -111,7 +111,7 @@ public class ProjetoPrevisaoDoTempo {
 
         float temperatura = informacoesMeteorologicas.optFloat("temp_c");
         float sensacaoTermica = informacoesMeteorologicas.optFloat("feelslike_c");
-        String condicaoDoTempo = informacoesMeteorologicas.getJSONObject("condition").optString("text");
+        String condicaoDoTempo = traduzirCondicaoDoTempo(informacoesMeteorologicas.getJSONObject("condition").optString("text"));
         int umidade = informacoesMeteorologicas.optInt("humidity");
         float velocidadeDoVendo = informacoesMeteorologicas.optFloat("wind_kph");
         float pressaoAtmosferica = informacoesMeteorologicas.optFloat("pressure_mb");
@@ -124,6 +124,61 @@ public class ProjetoPrevisaoDoTempo {
         System.out.println("Umidade: " + umidade + "%");
         System.out.println("Velocidade do Vendo: " + velocidadeDoVendo + " km/h");
         System.out.println("Pressão Atmosférica: " + pressaoAtmosferica + " mb");
+    }
+
+    public static String traduzirCondicaoDoTempo(String condicao) {
+        return switch (condicao) {
+            case "Sunny"                                        -> "Ensolarado";
+            case "Clear"                                        -> "Céu limpo";
+            case "Partly cloudy"                                -> "Parcialmente nublado";
+            case "Cloudy"                                       -> "Nublado";
+            case "Overcast"                                     -> "Encoberto";
+            case "Mist"                                         -> "Névoa";
+            case "Patchy rain possible"                         -> "Possibilidade de chuva irregular";
+            case "Patchy snow possible"                         -> "Possibilidade de neve irregular";
+            case "Patchy sleet possible"                        -> "Possibilidade de granizo irregular";
+            case "Patchy freezing drizzle possible"             -> "Possibilidade de garoa congelante irregular";
+            case "Thundery outbreaks possible"                  -> "Possibilidade de trovoadas";
+            case "Blowing snow"                                 -> "Neve com vento";
+            case "Blizzard"                                     -> "Nevasca";
+            case "Fog"                                          -> "Neblina";
+            case "Freezing fog"                                 -> "Neblina congelante";
+            case "Patchy light drizzle"                         -> "Garoa leve irregular";
+            case "Light drizzle"                                -> "Garoa leve";
+            case "Freezing drizzle"                             -> "Garoa congelante";
+            case "Heavy freezing drizzle"                       -> "Garoa congelante intensa";
+            case "Patchy light rain"                            -> "Chuva leve irregular";
+            case "Light rain"                                   -> "Chuva leve";
+            case "Moderate rain at times"                       -> "Chuva moderada às vezes";
+            case "Moderate rain"                                -> "Chuva moderada";
+            case "Heavy rain at times"                          -> "Chuva forte às vezes";
+            case "Heavy rain"                                   -> "Chuva forte";
+            case "Light freezing rain"                          -> "Chuva congelante leve";
+            case "Moderate or heavy freezing rain"              -> "Chuva congelante moderada ou forte";
+            case "Light sleet"                                  -> "Granizo leve";
+            case "Moderate or heavy sleet"                      -> "Granizo moderado ou forte";
+            case "Patchy light snow"                            -> "Neve leve irregular";
+            case "Light snow"                                   -> "Neve leve";
+            case "Patchy moderate snow"                         -> "Neve moderada irregular";
+            case "Moderate snow"                                -> "Neve moderada";
+            case "Patchy heavy snow"                            -> "Neve intensa irregular";
+            case "Heavy snow"                                   -> "Neve intensa";
+            case "Ice pellets"                                  -> "Pelotas de gelo";
+            case "Light rain shower"                            -> "Pancada de chuva leve";
+            case "Moderate or heavy rain shower"                -> "Pancada de chuva moderada ou forte";
+            case "Torrential rain shower"                       -> "Pancada de chuva torrencial";
+            case "Light sleet showers"                          -> "Pancadas de granizo leve";
+            case "Moderate or heavy sleet showers"              -> "Pancadas de granizo moderado ou forte";
+            case "Light snow showers"                           -> "Pancadas de neve leve";
+            case "Moderate or heavy snow showers"               -> "Pancadas de neve moderada ou forte";
+            case "Light showers of ice pellets"                 -> "Pancadas leves de pelotas de gelo";
+            case "Moderate or heavy showers of ice pellets"     -> "Pancadas moderadas ou fortes de pelotas de gelo";
+            case "Patchy light rain with thunder"               -> "Chuva leve irregular com trovões";
+            case "Moderate or heavy rain with thunder"          -> "Chuva moderada ou forte com trovões";
+            case "Patchy light snow with thunder"               -> "Neve leve irregular com trovões";
+            case "Moderate or heavy snow with thunder"          -> "Neve moderada ou forte com trovões";
+            default                                             -> condicao;
+        };
     }
 
     public static String toBrazilianFormat(String dataHora)
