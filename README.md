@@ -25,9 +25,12 @@ Ao executar o programa, ele irá:
 - ✅ Consulta HTTP à API WeatherAPI usando `HttpClient` nativo do Java
 - ✅ Leitura e parse de resposta em **JSON** com a biblioteca `org.json`
 - ✅ Tratamento de erros da API com mensagens amigáveis em português
+- ✅ Tradução das 49 condições do tempo para o português do Brasil
 - ✅ Formatação de data e hora para o padrão brasileiro (`dd/MM/yyyy HH:mm`)
 - ✅ Suporte a nomes de cidades com espaços e caracteres especiais (URL encoding)
 - ✅ Leitura da chave da API a partir de um arquivo externo (`APIKEY.txt`)
+- ✅ **Versão terminal** — exibe os dados diretamente no console
+- ✅ **Versão gráfica (JavaFX)** — janela com campo de busca, ícone do tempo e cards com os dados
 
 ---
 
@@ -66,7 +69,26 @@ brew install openjdk@17
 
 ---
 
-### 🔑 2. Chave de API da WeatherAPI (gratuita)
+### 🖥️ 2. JavaFX SDK (apenas para a versão gráfica)
+
+> Necessário somente se quiser rodar a versão com interface gráfica (`ProjetoPrevisaoDoTempoFX`).
+
+**No Ubuntu/Debian:**
+```bash
+sudo apt update
+sudo apt install openjfx -y
+```
+
+**No Windows e macOS:**
+1. Acesse: https://gluonhq.com/products/javafx/
+2. Baixe o **JavaFX SDK** compatível com seu sistema operacional
+3. Extraia o arquivo em uma pasta de sua preferência (ex: `C:\javafx-sdk` ou `/opt/javafx-sdk`)
+
+> 📝 Anote o caminho da pasta `lib` do SDK — você vai precisar dele nos comandos de compilação e execução.
+
+---
+
+### 🔑 3. Chave de API da WeatherAPI (gratuita)
 
 O projeto precisa de uma chave de acesso à **WeatherAPI**. Siga o passo a passo abaixo:
 
@@ -125,7 +147,7 @@ echo "SUA_CHAVE_AQUI" > src/APIKEY.txt
 
 ---
 
-### 🔨 Passo 3 – Compile o projeto
+### 🔨 Passo 3 – Compile o projeto (versão terminal)
 
 No terminal, dentro da pasta raiz do projeto, execute:
 
@@ -137,7 +159,7 @@ javac -cp src/json-20230618.jar -d out src/ProjetoPrevisaoDoTempo.java
 
 ---
 
-### ▶️ Passo 4 – Execute o projeto
+### ▶️ Passo 4 – Execute o projeto (versão terminal)
 
 ```bash
 java -cp out:src/json-20230618.jar ProjetoPrevisaoDoTempo
@@ -165,11 +187,66 @@ Informações Meteorológicas para São Paulo/Sao Paulo, no Brazil
 Data e Hora: 27/04/2026 14:30
 Temperatura Atual: 24.0 °C
 Sensação Térmica: 25.2 °C
-Condição do Tempo: Partly cloudy
+Condição do Tempo: Parcialmente nublado
 Umidade: 68%
 Velocidade do Vendo: 15.1 km/h
 Pressão Atmosférica: 1013.0 mb
 ```
+
+---
+
+## 🖼️ Versão Gráfica (JavaFX)
+
+### 🔨 Passo 3 – Compile o projeto (versão JavaFX)
+
+> Substitua `/caminho/para/javafx-sdk/lib` pelo caminho real do JavaFX SDK na sua máquina.
+> Exemplo no Linux: `/usr/share/openjfx/lib` ou `/usr/lib/jvm/javafx-sdk-22/lib`
+
+**Linux/macOS:**
+```bash
+javac \
+  --module-path /caminho/para/javafx-sdk/lib \
+  --add-modules javafx.controls,javafx.graphics \
+  -cp src/json-20230618.jar \
+  -d out \
+  src/ProjetoComJavaFX/ProjetoPrevisaoDoTempoFX.java
+```
+
+**Windows:**
+```bash
+javac --module-path C:\caminho\para\javafx-sdk\lib --add-modules javafx.controls,javafx.graphics -cp src/json-20230618.jar -d out src/ProjetoComJavaFX/ProjetoPrevisaoDoTempoFX.java
+```
+
+---
+
+### ▶️ Passo 4 – Execute o projeto (versão JavaFX)
+
+**Linux/macOS:**
+```bash
+java \
+  --module-path /caminho/para/javafx-sdk/lib \
+  --add-modules javafx.controls,javafx.graphics \
+  -cp out:src/json-20230618.jar \
+  ProjetoComJavaFX.ProjetoPrevisaoDoTempoFX
+```
+
+**Windows:**
+```bash
+java --module-path C:\caminho\para\javafx-sdk\lib --add-modules javafx.controls,javafx.graphics -cp out;src/json-20230618.jar ProjetoComJavaFX.ProjetoPrevisaoDoTempoFX
+```
+
+---
+
+### 💬 Passo 5 – Use o programa!
+
+Uma janela gráfica será aberta. Basta digitar o nome da cidade no campo e clicar em **Buscar**. A interface exibirá:
+
+- Nome da cidade, estado e país
+- Data e hora local
+- Ícone do tempo (carregado direto da WeatherAPI)
+- Temperatura em destaque
+- Condição do tempo em português
+- Cards com: sensação térmica, umidade, velocidade do vento e pressão atmosférica
 
 ---
 
@@ -179,9 +256,11 @@ Pressão Atmosférica: 1013.0 mb
 projeto_previsao_do_tempo/
 │
 ├── src/
-│   ├── ProjetoPrevisaoDoTempo.java   # Código-fonte principal
-│   ├── json-20230618.jar             # Biblioteca para manipulação de JSON
-│   └── APIKEY.txt                    # Sua chave da WeatherAPI (não versionar!)
+│   ├── ProjetoPrevisaoDoTempo.java        # Versão terminal
+│   ├── json-20230618.jar                  # Biblioteca para manipulação de JSON
+│   ├── APIKEY.txt                         # Sua chave da WeatherAPI (não versionar!)
+│   └── ProjetoComJavaFX/
+│       └── ProjetoPrevisaoDoTempoFX.java  # Versão gráfica com JavaFX
 │
 └── README.md
 ```
@@ -196,6 +275,8 @@ projeto_previsao_do_tempo/
 | `Nenhuma localização foi encontrada` | Verifique se o nome da cidade está correto |
 | `A chave da API informada é inválida` | Confirme que copiou a chave corretamente do painel da WeatherAPI |
 | `java: command not found` | Instale o Java JDK conforme indicado nos pré-requisitos |
+| `package javafx.application does not exist` | Instale o JavaFX SDK e use o `--module-path` nos comandos |
+| Janela não abre (JavaFX) | Verifique se o caminho do `--module-path` está correto |
 
 ---
 
@@ -210,10 +291,10 @@ projeto_previsao_do_tempo/
 ## 📚 Tecnologias utilizadas
 
 - ☕ **Java 11+** — linguagem principal
+- 🖥️ **JavaFX** — interface gráfica (versão FX)
 - 🌐 **WeatherAPI** — fonte dos dados meteorológicos
 - 📦 **org.json (json-20230618.jar)** — parse de JSON
 
 ---
 
 Feito com ☕ e ❤️ em Java!
-
